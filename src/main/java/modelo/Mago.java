@@ -38,6 +38,15 @@ public class Mago {
         this.conjuros = conjuros;
     }
 
+
+    
+
+    public Mago(String nombre, int vida, int nivelMagia) {
+        this.nombre = nombre;
+        this.vida = vida;
+        this.nivelMagia = nivelMagia;
+    }
+
     public String getNombre() {
         return nombre;
     }

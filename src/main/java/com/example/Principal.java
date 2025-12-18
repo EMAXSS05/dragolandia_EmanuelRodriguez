@@ -1,10 +1,13 @@
 package com.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import controlador.JuegoControler;
 import modelo.Bosque;
 import modelo.Dragon;
+import modelo.Hechizo;
 import modelo.Mago;
 import modelo.Monstruo;
 import modelo.Tipos;
@@ -24,7 +27,7 @@ public final class Principal {
             juegoControler = new JuegoControler();
             juegoControler.guardarEntidades(mo1, ma1, bo,d1);
 
-            juegoControler.iniciarBatalla(ma1, mo1);
+            juegoControler.iniciarBatalla(ma1, mo1,bo,d1);
             mostrarResultado(ma1, mo1);
             
         } catch (Exception e) {
@@ -44,6 +47,9 @@ public final class Principal {
         String nombre = sc.nextLine();
         int vida = leerEntero(sc, "Introduzca la vida del mago: ");
         int nivelMagia = leerEntero(sc, "Introduzca el nivel de magia: ");
+        List<Hechizo> conjuros= new ArrayList<>();
+        System.out.println("Introduzca 3 hechizos para el mago: ");
+      
 
         Mago m1 = new Mago(nombre, vida, nivelMagia);
         return m1;

@@ -12,4 +12,8 @@ class BolaNieve extends Hechizo {
         objetivo.setVida(0); 
         System.out.println("Bola de Nieve: " + objetivo.getNombre() + " ha sido congelado. Vida = 0.");
     }
+
+
+
+    
 }
