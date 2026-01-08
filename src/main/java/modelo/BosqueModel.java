@@ -26,6 +26,15 @@ public class BosqueModel {
             }
         }
     }
+    public Bosque obtenerBosque(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+        
+            return session.get(Bosque.class, id);
+        } catch (Exception e) {
+            System.out.println("Error al obtener el bosque: " + e.getMessage());
+            return null;
+        }
+    }
 
     public void actualizarBosque(Bosque bosque) {
         Transaction transaction = null;

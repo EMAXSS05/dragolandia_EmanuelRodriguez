@@ -16,8 +16,8 @@ public class Monstruo {
    private Long id;
    private String nombre;
    private int vida;
-   @Enumerated(EnumType.STRING)
 
+   @Enumerated(EnumType.STRING)
    private Tipos tipo;
    private int fuerza;
 
@@ -68,9 +68,23 @@ public class Monstruo {
         this.fuerza = fuerza;
     }
 
+    /**
+     * Metodo que se encarga de hacer daño al mago segun el tipo de mounstruo.
+     * @param mago
+     */
     public void atacar(Mago mago){
-      mago.setVida(mago.getVida()- fuerza);
-      System.out.println("El monstruo ha atacado al mago y ahora el mago tiene: "+ mago.getVida() +"puntos de vida");
+        int danioEfectivo = this.fuerza;
+
+        switch (this.tipo) {
+            case OGRO:
+                break;
+            case TROL:
+                danioEfectivo += 10; 
+                break;
+            case ESPECTRO:
+                danioEfectivo *= 2; 
+                break;
+        }
     }
 
     public void recibirDaño(int daño){

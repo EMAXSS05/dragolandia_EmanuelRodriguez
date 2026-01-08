@@ -1,10 +1,15 @@
 package modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -16,8 +21,11 @@ public class Bosque {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    private String nombre;
+  
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Monstruo> listaMonstruos = new ArrayList<>();
    private int nivelPeligro;
-   @OneToOne // O @ManyToOne, si varios bosques pueden tener el mismo Monstruo
+   @OneToOne 
     @JoinColumn(name = "monstruo_jefe_id")
    private Monstruo monstruoJefe;
 
@@ -29,6 +37,19 @@ public class Bosque {
     this.monstruoJefe=monstruoJefe;
 
    }
+   
+
+    public void addMonstruo(Monstruo m) {
+        if (m != null) {
+            this.listaMonstruos.add(m);
+            System.out.println("👹 Monstruo " + m.getNombre() + " añadido al bosque " + this.nombre);
+        }
+    }
+
+    
+    public List<Monstruo> getListaMonstruos() {
+        return listaMonstruos;
+    }
    
 
     public String getNombre() {

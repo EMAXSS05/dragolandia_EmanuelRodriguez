@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,46 +19,42 @@ public class Dragon {
     private int intensidadFuego;
     private int resistencia;
 
-    public Dragon(){}
 
-    
+    @ManyToOne // Varios dragones pueden vivir en el mismo bosque
+    @JoinColumn(name = "bosque_id")
+    private Bosque bosque;
+
+    public Dragon() {
+    }
+
     public Dragon(String nombre, int intensidadFuego, int resistencia) {
         this.nombre = nombre;
-        this.intensidadFuego = intensidadFuego;
-        this.resistencia = resistencia;
+        // Validación básica:
+        this.intensidadFuego = Math.max(0, intensidadFuego);
+        this.resistencia = Math.max(0, resistencia);
     }
 
-
-
-
-
-    public int getIntensidadFuego() {
-        return intensidadFuego;
+    // Método exigido por el enunciado
+    public void exhalar(Monstruo m) {
+        if (m != null) {
+            int vidaActual = m.getVida();
+            m.setVida(vidaActual - this.intensidadFuego);
+            System.out.println("El dragón " + this.nombre + " exhala fuego sobre " +
+                    m.getNombre() + " causando " + this.intensidadFuego + " de daño.");
+        }
     }
 
-
-    public void setIntensidadFuego(int intensidadFuego) {
-        this.intensidadFuego = intensidadFuego;
+    public Bosque getBosque() {
+        return bosque;
     }
 
-
-    public int getResistencia() {
-        return resistencia;
+    public void setBosque(Bosque bosque) {
+        this.bosque = bosque;
     }
 
-
-    public void setResistencia(int resistencia) {
-        this.resistencia = resistencia;
+    public Long getId() {
+        return id;
     }
-
-
-
-    public void exhalar(Monstruo m ){
-       int danio= this.intensidadFuego;
-       m.setVida(m.getVida()-danio);
-    }
-
-
 
 
 
@@ -64,12 +62,24 @@ public class Dragon {
         return nombre;
     }
 
-
-
-
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public int getIntensidadFuego() {
+        return intensidadFuego;
+    }
+
+    public void setIntensidadFuego(int intensidadFuego) {
+        this.intensidadFuego = intensidadFuego;
+    }
+
+    public int getResistencia() {
+        return resistencia;
+    }
+
+    public void setResistencia(int resistencia) {
+        this.resistencia = resistencia;
     }
     
 

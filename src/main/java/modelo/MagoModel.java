@@ -43,7 +43,7 @@ public class MagoModel {
        }
     }
 
-    Mago leerPorId(int id){
+    Mago leerPorId(Long id){
         
         try (Session session= sessionFactory.openSession()) {
             

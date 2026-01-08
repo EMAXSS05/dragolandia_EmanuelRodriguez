@@ -4,10 +4,12 @@ package modelo;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +21,7 @@ public class Mago {
     private String nombre;
     private int vida;
     private int nivelMagia;
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Hechizo>conjuros;
     
 
@@ -64,12 +67,12 @@ public class Mago {
         this.nombre = nombre;
     }
 
-    public void setVida(int vida) {
-        this.vida = vida;
+   public void setVida(int vida) {
+        this.vida = Math.max(0, vida); 
     }
     
     public void setNivelMagia(int nivelMagia) {
-        this.nivelMagia = nivelMagia;
+        this.nivelMagia = Math.max(0, nivelMagia);
     }
 
   
