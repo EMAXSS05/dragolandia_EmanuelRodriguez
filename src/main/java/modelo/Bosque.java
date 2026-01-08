@@ -42,7 +42,7 @@ public class Bosque {
     public void addMonstruo(Monstruo m) {
         if (m != null) {
             this.listaMonstruos.add(m);
-            System.out.println("👹 Monstruo " + m.getNombre() + " añadido al bosque " + this.nombre);
+            System.out.println("Monstruo " + m.getNombre() + " añadido al bosque " + this.nombre);
         }
     }
 

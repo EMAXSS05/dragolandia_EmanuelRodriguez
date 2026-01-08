@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Scanner;
 
 import controlador.JuegoControler;
+import modelo.BolaFuego;
+import modelo.BolaNieve;
 import modelo.Bosque;
 import modelo.Dragon;
+import modelo.Drenaje;
 import modelo.Hechizo;
 import modelo.Mago;
 import modelo.Monstruo;
+import modelo.Rayo;
 import modelo.Tipos;
 
 public final class Principal {
@@ -23,6 +27,7 @@ public final class Principal {
             Monstruo mo1 = crearMonstruo(sc);
             Dragon d1= crearDragon(sc);
             Bosque bo = crearBosque(sc, mo1);
+           
 
             juegoControler = new JuegoControler();
             juegoControler.guardarEntidades(mo1, ma1, bo,d1);
@@ -48,10 +53,44 @@ public final class Principal {
         int vida = leerEntero(sc, "Introduzca la vida del mago: ");
         int nivelMagia = leerEntero(sc, "Introduzca el nivel de magia: ");
         List<Hechizo> conjuros= new ArrayList<>();
-        System.out.println("Introduzca 3 hechizos para el mago: ");
+        
+        System.out.println("Introduzca al menos 2 hechizos para el mago: 1.BolaFuego" );
+        System.out.println("2.Bola Nieve.");
+        System.out.println("3.Rayo");
+        System.out.println("4.Drenaje");
+        System.out.println("5.Confirmar Hechizos.");
+        int conjuro= 0;
+        while (conjuro!=5) {
+            conjuro=leerEntero(sc, "");
+              switch (conjuro) {
+            case 1:
+                BolaFuego b1 = new BolaFuego();
+                conjuros.add(b1);
+                break;
+            case 2:
+                BolaNieve bn= new BolaNieve();
+                conjuros.add(bn);
+                break;
+            case 3:
+                Rayo ra= new Rayo();
+                conjuros.add(ra);
+                break;
+            case 4:
+                Drenaje dr= new Drenaje();
+                conjuros.add(dr);
+                break;
+            case 5:
+                break;
+            default:
+                break;
+        }
+
+        }
       
 
-        Mago m1 = new Mago(nombre, vida, nivelMagia);
+      
+
+        Mago m1 = new Mago(nombre, vida, nivelMagia, conjuros);
         return m1;
     }
 

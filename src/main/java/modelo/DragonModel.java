@@ -15,21 +15,22 @@ public class DragonModel {
     }
 
     
-    public void guardarDragon(Dragon dragon){
-        Transaction transaction= null;
-        try(Session session= sessionFactory.openSession()) {
-            transaction= session.beginTransaction();
-            session.persist(dragon);
-            transaction.commit();
-            
-            
-        } catch (Exception e) {
-            System.out.println("Error al guardar el bosque "+e.getMessage());
-            if (transaction!=null) {
-                transaction.rollback();
+ public void guardarDragon(Dragon dragon) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                transaction = session.beginTransaction();
+                session.persist(dragon);
+                transaction.commit();
+            } catch (Exception e) {
+               
+                if (transaction != null ) {
+                    transaction.rollback();
+                }
+                System.err.println("Error al guardar el Dragón: " + e.getMessage());
+                e.printStackTrace(); 
             }
-        }
-        
+        } 
     }
 
     

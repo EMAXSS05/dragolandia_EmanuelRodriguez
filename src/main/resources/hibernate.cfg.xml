@@ -14,6 +14,7 @@
         <mapping class="modelo.Mago" />
         <mapping class="modelo.Monstruo" />
         <mapping class="modelo.Bosque" />
+        <mapping class= "modelo.Dragon"/>
 
     </session-factory>
 </hibernate-configuration>

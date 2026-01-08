@@ -5,7 +5,7 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 @PrimaryKeyJoinColumn(name="id")
-class Rayo extends Hechizo {
+public class Rayo extends Hechizo {
     private final int danio = 35; 
     @Override
     public void aplicarEfecto(Mago lanzador, Monstruo objetivo) {

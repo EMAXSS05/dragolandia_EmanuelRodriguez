@@ -20,7 +20,7 @@ public class Dragon {
     private int resistencia;
 
 
-    @ManyToOne // Varios dragones pueden vivir en el mismo bosque
+    @ManyToOne 
     @JoinColumn(name = "bosque_id")
     private Bosque bosque;
 
@@ -29,12 +29,14 @@ public class Dragon {
 
     public Dragon(String nombre, int intensidadFuego, int resistencia) {
         this.nombre = nombre;
-        // Validación básica:
         this.intensidadFuego = Math.max(0, intensidadFuego);
         this.resistencia = Math.max(0, resistencia);
     }
 
-    // Método exigido por el enunciado
+/**
+ * Método que quita vida a un monstruo según la intensidad de fuego del dragón
+ * @param m es el monstruo
+ */
     public void exhalar(Monstruo m) {
         if (m != null) {
             int vidaActual = m.getVida();
@@ -43,6 +45,7 @@ public class Dragon {
                     m.getNombre() + " causando " + this.intensidadFuego + " de daño.");
         }
     }
+
 
     public Bosque getBosque() {
         return bosque;

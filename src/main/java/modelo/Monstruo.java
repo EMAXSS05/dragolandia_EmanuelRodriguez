@@ -75,23 +75,23 @@ public class Monstruo {
     public void atacar(Mago mago){
         int danioEfectivo = this.fuerza;
 
-        switch (this.tipo) {
+        switch (this.tipo) { 
             case OGRO:
+                danioEfectivo +=15;
+                mago.setVida(mago.getVida()-danioEfectivo);
                 break;
             case TROL:
-                danioEfectivo += 10; 
+                danioEfectivo += 10;
+                mago.setVida(mago.getVida()- danioEfectivo); 
                 break;
             case ESPECTRO:
                 danioEfectivo *= 2; 
+                mago.setVida(mago.getVida()- danioEfectivo);
                 break;
         }
     }
 
-    public void recibirDaño(int daño){
-     int vida= this.vida-daño;
-     System.out.println("El monstruo ha recibido "+ daño+ "daño, el monstruo ahora tiene "+ vida+"puntos de vida");
-      
-    }
+    
 
     
 
