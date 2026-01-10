@@ -1,53 +1,85 @@
 package modelo;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import java.util.List;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 public class BosqueModel {
-    private SessionFactory sessionFactory;
-
-    public BosqueModel(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-
-    }
-
+    
    public void guardarBosque(Bosque bosque) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.persist(bosque);
-            transaction.commit();
+        EntityManager em= util.HibernateUtil.getEntityManager();
+        EntityTransaction et= em.getTransaction();
+        try {
+            et.begin();
+            em.persist(bosque);
+            et.commit();
 
         } catch (Exception e) {
             System.out.println("Error al guardar el bosque " + e.getMessage());
-            if (transaction != null) {
-                transaction.rollback();
+            if (et.isActive()) {
+                et.rollback();
             }
+        }finally{
+            em.close();
         }
     }
     public Bosque obtenerBosque(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-        
-            return session.get(Bosque.class, id);
+        EntityManager em= util.HibernateUtil.getEntityManager();
+        try {
+             
+            return  em.find(Bosque.class, id);
         } catch (Exception e) {
             System.out.println("Error al obtener el bosque: " + e.getMessage());
             return null;
+        }finally{
+            em.close();
+        }
+    }
+
+    public List<Bosque> obtenerTodos(){
+        EntityManager em= util.HibernateUtil.getEntityManager();
+        try {
+            return em.createQuery("FROM Bosque", Bosque.class).getResultList();
+        } catch (Exception e) {
+            System.out.println("Error al obtener todos los bosques");
+            return null;
+        }finally{
+            em.close();
         }
     }
 
     public void actualizarBosque(Bosque bosque) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.merge(bosque);
-            transaction.commit();
+        EntityManager em= util.HibernateUtil.getEntityManager();
+        EntityTransaction et= em.getTransaction();
+        try   {
+           et.begin();
+        em.merge(bosque);
+            et.commit();
 
         } catch (Exception e) {
             System.out.println("Error al actualizar el bosque " + e.getMessage());
-            if (transaction!=null) {
-                transaction.rollback();
+            if (et.isActive()) {
+                et.rollback();
             }
+        } finally{
+            em.close();
+        }
+    }
+
+    public void eliminar(Long id){
+        EntityManager em= util.HibernateUtil.getEntityManager();
+        EntityTransaction et= em.getTransaction();
+        try {
+            et.begin();
+            Bosque bo= em.find(Bosque.class, id);
+            if (bo!=null) {
+                em.remove(bo);
+            }
+            et.commit();
+        } catch (Exception e) {
+            System.out.println("No se pudo borrar el bosque con id: "+id+ e.getMessage());
+        }finally{
+            em.close();
         }
     }
 

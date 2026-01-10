@@ -25,21 +25,34 @@ public final class Principal {
         try {
             Mago ma1 = crearMago(sc);
             Monstruo mo1 = crearMonstruo(sc);
-            Dragon d1= crearDragon(sc);
+            Dragon d1 = crearDragon(sc);
             Bosque bo = crearBosque(sc, mo1);
-           
+
+            d1.setBosque(bo);
 
             juegoControler = new JuegoControler();
-            juegoControler.guardarEntidades(mo1, ma1, bo,d1);
+            juegoControler.guardarEntidades(mo1, ma1, bo, d1);
 
-            juegoControler.iniciarBatalla(ma1, mo1,bo,d1);
+            juegoControler.iniciarBatalla(ma1, mo1, bo, d1);
             mostrarResultado(ma1, mo1);
             
+
+            System.out.println("\n--- PRUEBA DE GESTIÓN (CRUD) ---");
+            juegoControler.listarMagos(); 
+
+            System.out.println("Introduce el ID del mago que quieres buscar:");
+            long idBusqueda = Long.parseLong(sc.nextLine());
+            Mago encontrado = juegoControler.obtenerMago(idBusqueda);
+
+            if (encontrado != null) {
+                System.out.println("Se ha encontrado a: " + encontrado.getNombre());
+            }
+
         } catch (Exception e) {
             System.out.println("Error al ejecutar el programa");
         } finally {
-            if (juegoControler!=null) {
-                juegoControler.cerrarRecursos();
+            if (juegoControler != null) {
+                juegoControler.cerrarRecursos();;
             }
             sc.close();
         }
@@ -52,43 +65,40 @@ public final class Principal {
         String nombre = sc.nextLine();
         int vida = leerEntero(sc, "Introduzca la vida del mago: ");
         int nivelMagia = leerEntero(sc, "Introduzca el nivel de magia: ");
-        List<Hechizo> conjuros= new ArrayList<>();
-        
-        System.out.println("Introduzca al menos 2 hechizos para el mago: 1.BolaFuego" );
+        List<Hechizo> conjuros = new ArrayList<>();
+
+        System.out.println("Introduzca al menos 2 hechizos para el mago: 1.BolaFuego");
         System.out.println("2.Bola Nieve.");
         System.out.println("3.Rayo");
         System.out.println("4.Drenaje");
         System.out.println("5.Confirmar Hechizos.");
-        int conjuro= 0;
-        while (conjuro!=5) {
-            conjuro=leerEntero(sc, "");
-              switch (conjuro) {
-            case 1:
-                BolaFuego b1 = new BolaFuego();
-                conjuros.add(b1);
-                break;
-            case 2:
-                BolaNieve bn= new BolaNieve();
-                conjuros.add(bn);
-                break;
-            case 3:
-                Rayo ra= new Rayo();
-                conjuros.add(ra);
-                break;
-            case 4:
-                Drenaje dr= new Drenaje();
-                conjuros.add(dr);
-                break;
-            case 5:
-                break;
-            default:
-                break;
-        }
+        int conjuro = 0;
+        while (conjuro != 5) {
+            conjuro = leerEntero(sc, "");
+            switch (conjuro) {
+                case 1:
+                    BolaFuego b1 = new BolaFuego();
+                    conjuros.add(b1);
+                    break;
+                case 2:
+                    BolaNieve bn = new BolaNieve();
+                    conjuros.add(bn);
+                    break;
+                case 3:
+                    Rayo ra = new Rayo();
+                    conjuros.add(ra);
+                    break;
+                case 4:
+                    Drenaje dr = new Drenaje();
+                    conjuros.add(dr);
+                    break;
+                case 5:
+                    break;
+                default:
+                    break;
+            }
 
         }
-      
-
-      
 
         Mago m1 = new Mago(nombre, vida, nivelMagia, conjuros);
         return m1;
@@ -128,7 +138,7 @@ public final class Principal {
                 break;
             default:
                 System.out.println("selección inválida, tipo Ogro asignado por defecto");
-                tipo=Tipos.OGRO;
+                tipo = Tipos.OGRO;
                 break;
 
         }
@@ -137,13 +147,13 @@ public final class Principal {
 
     }
 
-    static Dragon crearDragon(Scanner sc){
+    static Dragon crearDragon(Scanner sc) {
         System.out.println("------Creación del Dragón------");
         System.out.println("Introduzca el nombre del dragon: ");
-        String nombre= sc.nextLine();
-        int intensidadFuego= leerEntero(sc, "Introduzca la intensidad de fuego del dragon" +nombre+": ");
-        int resistencia= leerEntero(sc, "Introduzca la resistencia del fuego del dragon "+ nombre);
-        Dragon dragon= new Dragon(nombre,intensidadFuego,resistencia);
+        String nombre = sc.nextLine();
+        int intensidadFuego = leerEntero(sc, "Introduzca la intensidad de fuego del dragon" + nombre + ": ");
+        int resistencia = leerEntero(sc, "Introduzca la resistencia del fuego del dragon " + nombre);
+        Dragon dragon = new Dragon(nombre, intensidadFuego, resistencia);
         return dragon;
 
     }
@@ -168,30 +178,31 @@ public final class Principal {
 
     /**
      * Funcion que muestra el resultado de la batalla
+     * 
      * @param mago
      * @param jefe
      */
     private static void mostrarResultado(Mago mago, Monstruo jefe) {
-    System.out.println("\n---RESULTADO FINAL DE LA BATALLA---");
-    
-    int vidaMago = Math.max(0, mago.getVida());
-    int vidaMonstruo = Math.max(0, jefe.getVida());
-    
-    System.out.println("Mago " + mago.getNombre() + " Vida Final: " + vidaMago);
-    System.out.println("Monstruo " + jefe.getNombre() + " Vida Final: " + vidaMonstruo);
-    
-    System.out.println("----------------------------------------");
+        System.out.println("\n---RESULTADO FINAL DE LA BATALLA---");
 
-    if (vidaMago > 0) {
-    
-        System.out.println("El Mago " + mago.getNombre() + "ha vencido al Monstruo Jefe");
-    } else if (vidaMonstruo > 0) {
-        
-        System.out.println("El Monstruo Jefe " + jefe.getNombre() + " ha defendido el bosque");
-    } else {
-        
-        System.out.println("Empate, Ambos combatientes han caído a cero.");
+        int vidaMago = Math.max(0, mago.getVida());
+        int vidaMonstruo = Math.max(0, jefe.getVida());
+
+        System.out.println("Mago " + mago.getNombre() + " Vida Final: " + vidaMago);
+        System.out.println("Monstruo " + jefe.getNombre() + " Vida Final: " + vidaMonstruo);
+
+        System.out.println("----------------------------------------");
+
+        if (vidaMago > 0) {
+
+            System.out.println("El Mago " + mago.getNombre() + "ha vencido al Monstruo Jefe");
+        } else if (vidaMonstruo > 0) {
+
+            System.out.println("El Monstruo Jefe " + jefe.getNombre() + " ha defendido el bosque");
+        } else {
+
+            System.out.println("Empate, Ambos combatientes han caído a cero.");
+        }
     }
-}
 
 }

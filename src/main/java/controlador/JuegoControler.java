@@ -1,7 +1,7 @@
 package controlador;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+
+import java.util.List;
 
 import com.example.Config;
 
@@ -20,14 +20,13 @@ public class JuegoControler {
     private MonstruoModel monstruoModel;
     private BosqueModel bosqueModel;
     private DragonModel dragonModel;
-    private SessionFactory sessionFactory;
+    
 
     public JuegoControler(){
-        this.sessionFactory= Config.getSessionFactory();
-        this.monstruoModel = new MonstruoModel(sessionFactory);
-        this.magoModel= new MagoModel(sessionFactory);
-        this.bosqueModel= new BosqueModel(sessionFactory);
-        this.dragonModel= new DragonModel(sessionFactory);
+        this.monstruoModel = new MonstruoModel();
+        this.magoModel= new MagoModel();
+        this.bosqueModel= new BosqueModel();
+        this.dragonModel= new DragonModel();
     }
 
     /**
@@ -96,7 +95,27 @@ public class JuegoControler {
     }
     
     public void cerrarRecursos() {
-        Config.closeFactory();
+        util.HibernateUtil.close();
+    }
+
+    public void listarMagos(){
+        List<Mago> magos = magoModel.obtenerTodos();
+        if (magos.isEmpty()) {
+            System.out.println("No hay magos registrados");
+        } else{
+            for (Mago mago : magos) {
+                System.out.println("Mago con id: "+ mago.getId()+ "Nombre: "+mago.getNombre()+" HP: "+mago.getVida());
+            }
+        }
+    }
+
+    public Mago obtenerMago(Long id){
+       return magoModel.leerPorId(id);
+    }
+
+    public void borrarMago(Long id){
+        magoModel.borrarMago(id);
+        System.out.println("Mago con id: "+id +" ha sido eliminado");
     }
 
 }

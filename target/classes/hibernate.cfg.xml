@@ -15,6 +15,12 @@
         <mapping class="modelo.Monstruo" />
         <mapping class="modelo.Bosque" />
         <mapping class= "modelo.Dragon"/>
+        <mapping class="modelo.Hechizo" />
+        <mapping class="modelo.Rayo" />
+        <mapping class="modelo.BolaNieve" />
+        <mapping class="modelo.BolaFuego" />
+        <mapping class="modelo.Drenaje" />
+
 
     </session-factory>
 </hibernate-configuration>

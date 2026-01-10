@@ -1,6 +1,5 @@
 package modelo;
 
-import javax.annotation.processing.Generated;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

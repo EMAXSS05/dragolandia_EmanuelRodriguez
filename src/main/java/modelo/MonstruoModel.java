@@ -1,56 +1,76 @@
 package modelo;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+
+import java.util.List;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 public class MonstruoModel {
-    private SessionFactory sessionFactory;
-
-    public MonstruoModel(SessionFactory sessionFactory){
-        this.sessionFactory=sessionFactory;
-    }
+    
 
     public void guardarMonstruo(Monstruo mo){
-        Transaction transaction= null;
-       try (Session session= sessionFactory.openSession()) {
-        transaction= session.beginTransaction();
-        session.persist(mo);
-        transaction.commit();
+        EntityManager em= util.HibernateUtil.getEntityManager();
+        EntityTransaction et= em.getTransaction();
+       try {
+        et.begin();
+        em.persist(mo);
+        et.commit();
             
        } catch (Exception e) {
        System.out.println("Error al guardar el monstruo "+e.getMessage());
-       if (transaction!=null) {
-        transaction.rollback();
+       if (et.isActive()) {
+         et.rollback();
        }
+       } finally{
+        em.close();
        }
     }
 
     public void actualizarMonstruo(Monstruo mo){
-        Transaction transaction= null;
-        try (Session session= sessionFactory.openSession()) {
-            transaction= session.beginTransaction();
-            session.merge(mo);
-            transaction.commit();
+       EntityManager em= util.HibernateUtil.getEntityManager();
+       EntityTransaction et= em.getTransaction();
+        try  {
+            et.begin();
+            em.merge(mo);
+            et.commit();
 
             
         } catch (Exception e) {
             System.out.println("No se pudo actualizar el monstruo "+ e.getMessage());
-            if (transaction!= null) {
-                transaction.rollback();
+            if (et.isActive()) {
+                et.rollback();
             }
+        }finally{
+            em.close();
         }
     }
 
-    Monstruo leerPorId(int id){
-       try (Session session= sessionFactory.openSession()) {
-        Monstruo monstruo= session.find(Monstruo.class, id);
-        return monstruo;
+    public Monstruo leerPorId(Long id){
+        EntityManager em= util.HibernateUtil.getEntityManager();
+       try {
+        return em.find(Monstruo.class , id);
+        
         
        } catch (Exception e) {
         System.out.println("No se pudo leer el monstruo con id: "+id +" "+ e.getMessage());
         return null;
+       } finally{
+        em.close();
        }
+    }
+
+    public List<Monstruo> obtenerTodos(){
+        EntityManager em= util.HibernateUtil.getEntityManager();
+        try {
+            return em.createQuery("FROM Monstruo", Monstruo.class).getResultList();
+
+        } catch (Exception e) {
+            System.out.println("No se pudo obtener todos los monstruos "+ e.getMessage());
+            return null;
+        } finally{
+            em.close();
+        }
     }
 
 }
