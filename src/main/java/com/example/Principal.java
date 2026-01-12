@@ -23,22 +23,46 @@ public final class Principal {
         JuegoControler juegoControler = null;
 
         try {
-            Mago ma1 = crearMago(sc);
-            Monstruo mo1 = crearMonstruo(sc);
-            Dragon d1 = crearDragon(sc);
-            Bosque bo = crearBosque(sc, mo1);
+            Mago ma1;
+            Mago ma2;
+            Mago ma3;
+            Mago ma4;
 
-            d1.setBosque(bo);
+            int numMagos = leerEntero(sc, "Seleccione cuantos magos quiere en su partida mínimo 2, máximo 4.");
+            if (numMagos == 2) {
+                ma1 = crearMago(sc);
+                ma2 = crearMago(sc);
+                Monstruo monstruoJefe = crearMonstruo(sc);
+                Dragon d1 = crearDragon(sc);
+                Bosque bo = crearBosque(sc, monstruoJefe);
+                d1.setBosque(bo);
+                juegoControler= new JuegoControler();
+                juegoControler.guardarEntidades(monstruoJefe, ma1, ma2, bo, d1); 
+                juegoControler.iniciarBatalla(ma1, ma2, monstruoJefe, bo, d1);
 
-            juegoControler = new JuegoControler();
-            juegoControler.guardarEntidades(mo1, ma1, bo, d1);
 
-            juegoControler.iniciarBatalla(ma1, mo1, bo, d1);
-            mostrarResultado(ma1, mo1);
+            } else if (numMagos == 3) {
+                ma1 = crearMago(sc);
+                ma2 = crearMago(sc);
+                ma3 = crearMago(sc);
+            } else if (numMagos == 4) {
+                ma1 = crearMago(sc);
+                ma2 = crearMago(sc);
+                ma3 = crearMago(sc);
+            } else {
+                System.out.println("Entrada inválida");
+            }
+
+           // Monstruo mo1 = crearMonstruo(sc);
+            //Dragon d1 = crearDragon(sc);
+            //Bosque bo = crearBosque(sc, mo1);
+
+            //d1.setBosque(bo);
+
             
 
             System.out.println("\n--- PRUEBA DE GESTIÓN (CRUD) ---");
-            juegoControler.listarMagos(); 
+            juegoControler.listarMagos();
 
             System.out.println("Introduce el ID del mago que quieres buscar:");
             long idBusqueda = Long.parseLong(sc.nextLine());
@@ -52,7 +76,8 @@ public final class Principal {
             System.out.println("Error al ejecutar el programa");
         } finally {
             if (juegoControler != null) {
-                juegoControler.cerrarRecursos();;
+                juegoControler.cerrarRecursos();
+                ;
             }
             sc.close();
         }
@@ -151,8 +176,8 @@ public final class Principal {
         System.out.println("------Creación del Dragón------");
         System.out.println("Introduzca el nombre del dragon: ");
         String nombre = sc.nextLine();
-        int intensidadFuego = leerEntero(sc, "Introduzca la intensidad de fuego del dragon" + nombre + ": ");
-        int resistencia = leerEntero(sc, "Introduzca la resistencia del fuego del dragon " + nombre);
+        int intensidadFuego = leerEntero(sc, "Introduzca la intensidad de fuego del dragon " + nombre + ": ");
+        int resistencia = leerEntero(sc, "Introduzca la resistencia del dragon " + nombre);
         Dragon dragon = new Dragon(nombre, intensidadFuego, resistencia);
         return dragon;
 
@@ -182,20 +207,21 @@ public final class Principal {
      * @param mago
      * @param jefe
      */
-    private static void mostrarResultado(Mago mago, Monstruo jefe) {
+    private static void mostrarResultado(Mago mago1,Mago mago2, Monstruo jefe, Dragon dragon) {
         System.out.println("\n---RESULTADO FINAL DE LA BATALLA---");
 
-        int vidaMago = Math.max(0, mago.getVida());
+        int vidaMago1 = Math.max(0, mago1.getVida());
+        int vidaMago2= Math.max(0,mago2.getVida());
         int vidaMonstruo = Math.max(0, jefe.getVida());
 
-        System.out.println("Mago " + mago.getNombre() + " Vida Final: " + vidaMago);
+        System.out.println("Mago " + mago1.getNombre() + " Vida Final: " + vidaMago1);
         System.out.println("Monstruo " + jefe.getNombre() + " Vida Final: " + vidaMonstruo);
 
         System.out.println("----------------------------------------");
 
-        if (vidaMago > 0) {
+        if (vidaMago1 > 0 || vidaMago2 >0) {
 
-            System.out.println("El Mago " + mago.getNombre() + "ha vencido al Monstruo Jefe");
+            System.out.println("El Mago " + mago1.getNombre() + "ha vencido al Monstruo Jefe");
         } else if (vidaMonstruo > 0) {
 
             System.out.println("El Monstruo Jefe " + jefe.getNombre() + " ha defendido el bosque");

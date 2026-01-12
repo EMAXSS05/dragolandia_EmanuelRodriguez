@@ -17,4 +17,14 @@ public class BolaFuego extends Hechizo {
                 " de daño a " + objetivo.getNombre() +
                 ". Vida restante: " + objetivo.getVida());
     }
+
+    public BolaFuego(){
+        
+    }
+
+    public BolaFuego(String nombre) {
+        super(nombre);
+    }
+
+    
 }

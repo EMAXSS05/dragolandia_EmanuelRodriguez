@@ -13,6 +13,13 @@ public class Drenaje extends Hechizo {
          
     }
 
+    public Drenaje(String nombre) {
+        super(nombre);
+    }
+
+
+
+
     /**
      * función que quita la vida al mounstruo según la mitad de su nivel de magia y se cura.
      */

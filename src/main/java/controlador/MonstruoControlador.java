@@ -1,12 +1,13 @@
-package modelo;
+package controlador;
 
 
 import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import modelo.Monstruo;
 
-public class MonstruoModel {
+public class MonstruoControlador {
     
 
     public void guardarMonstruo(Monstruo mo){

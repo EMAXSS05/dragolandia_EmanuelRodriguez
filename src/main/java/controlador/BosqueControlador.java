@@ -1,10 +1,11 @@
-package modelo;
+package controlador;
 
 import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import modelo.Bosque;
 
-public class BosqueModel {
+public class BosqueControlador {
     
    public void guardarBosque(Bosque bosque) {
         EntityManager em= util.HibernateUtil.getEntityManager();
