@@ -118,4 +118,13 @@ public class JuegoControler {
         System.out.println("Mago con id: "+id +" ha sido eliminado");
     }
 
+    public void borrarBosque(Long id){
+        bosqueModel.eliminar(id);
+        System.out.println("El bosque con id: "+ id+" ha sido eliminado");
+    }
+
+    public Bosque obtenerBosque(Long id){
+        return bosqueModel.obtenerBosque(id);
+    }
+
 }

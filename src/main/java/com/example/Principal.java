@@ -48,6 +48,12 @@ public final class Principal {
                 System.out.println("Se ha encontrado a: " + encontrado.getNombre());
             }
 
+            System.out.println("Introduce el id del bosque que quieres borrar: ");
+            long idBosque= Long.parseLong(sc.nextLine());
+            juegoControler.borrarBosque(idBosque);
+            Bosque bosque= juegoControler.obtenerBosque(idBosque);
+            System.out.println("Se ha eliminado el bosque "+bosque.getNombre()+"  con id: "+ idBosque);
+
         } catch (Exception e) {
             System.out.println("Error al ejecutar el programa");
         } finally {
@@ -73,26 +79,34 @@ public final class Principal {
         System.out.println("4.Drenaje");
         System.out.println("5.Confirmar Hechizos.");
         int conjuro = 0;
+        int contador=0;
         while (conjuro != 5) {
+            
             conjuro = leerEntero(sc, "");
             switch (conjuro) {
+                
                 case 1:
                     BolaFuego b1 = new BolaFuego();
                     conjuros.add(b1);
+                    contador++;
                     break;
                 case 2:
                     BolaNieve bn = new BolaNieve();
                     conjuros.add(bn);
+                    contador++;
                     break;
                 case 3:
                     Rayo ra = new Rayo();
                     conjuros.add(ra);
+                    contador++;
                     break;
                 case 4:
                     Drenaje dr = new Drenaje();
                     conjuros.add(dr);
+                    contador++;
                     break;
                 case 5:
+                    System.out.println("Has asignado "+ contador+ " hechizos al mago");
                     break;
                 default:
                     break;
@@ -152,7 +166,7 @@ public final class Principal {
         System.out.println("Introduzca el nombre del dragon: ");
         String nombre = sc.nextLine();
         int intensidadFuego = leerEntero(sc, "Introduzca la intensidad de fuego del dragon" + nombre + ": ");
-        int resistencia = leerEntero(sc, "Introduzca la resistencia del fuego del dragon " + nombre);
+        int resistencia = leerEntero(sc, "Introduzca la resistencia del dragon " + nombre);
         Dragon dragon = new Dragon(nombre, intensidadFuego, resistencia);
         return dragon;
 

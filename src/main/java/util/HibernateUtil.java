@@ -10,19 +10,16 @@ import jakarta.persistence.Persistence;
  */
 public class HibernateUtil {
 
-    //Mantemos a variable global estática e final do xestor de entidades único 
-    private static final EntityManagerFactory xestorEntidades =
-        Persistence.createEntityManagerFactory("dragolandiaServizo");
+   private static EntityManagerFactory xestorEntidades= Persistence.createEntityManagerFactory("dragolandiaServizo");
+   public static EntityManager getEntityManager(){
+    return xestorEntidades.createEntityManager();
+   }
 
-    public static EntityManager getEntityManager() {
-        return xestorEntidades.createEntityManager();
-    }
-   
-    public static void close() {
-        if (xestorEntidades.isOpen()) {
-            xestorEntidades.close();
-        }
-    }
+   public static void close(){
+     if (xestorEntidades.isOpen()) {
+        xestorEntidades.close();
+     }
+   }
 
 }
 

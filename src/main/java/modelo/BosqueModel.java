@@ -66,22 +66,20 @@ public class BosqueModel {
         }
     }
 
-    public void eliminar(Long id){
-        EntityManager em= util.HibernateUtil.getEntityManager();
-        EntityTransaction et= em.getTransaction();
-        try {
-            et.begin();
-            Bosque bo= em.find(Bosque.class, id);
-            if (bo!=null) {
-                em.remove(bo);
-            }
-            et.commit();
-        } catch (Exception e) {
-            System.out.println("No se pudo borrar el bosque con id: "+id+ e.getMessage());
-        }finally{
-            em.close();
+   public void eliminar(Long id){
+    EntityManager em= util.HibernateUtil.getEntityManager();
+    EntityTransaction et= em.getTransaction();
+    try {
+        et.begin();
+        Bosque bo= em.find(Bosque.class, id);
+        if (bo!= null) {
+            em.remove(bo);
         }
+        et.commit();
+    } catch (Exception e) {
+        System.out.println("");
     }
+   }
 
     
 
