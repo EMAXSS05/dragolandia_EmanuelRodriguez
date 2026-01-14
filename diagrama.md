@@ -65,7 +65,7 @@ direction TB
     class Hechizo {
         -Long id
 	    -String nombre
-        +aplicarEfecto()
+        +aplicarEfecto(lanzador:Mago,objetivo:Monstruo)
 
     }
 
@@ -79,5 +79,6 @@ direction TB
     Hechizo <|-- BolaDeFuego
     Hechizo <|-- Rayo
     Hechizo <|-- BolaDeNieve
+	Hechizo <|-- Drenaje
 
 ```

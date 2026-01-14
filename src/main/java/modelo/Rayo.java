@@ -12,4 +12,15 @@ public class Rayo extends Hechizo {
         objetivo.setVida(objetivo.getVida() - danio);
         System.out.println("Rayo: " + objetivo.getNombre() + " recibe " + danio + " de daño. Vida restante: " + objetivo.getVida());
     }
+    
+    public Rayo() {
+    }
+    public Rayo(String nombre) {
+        super(nombre);
+    }
+
+    
+
+
+
 }

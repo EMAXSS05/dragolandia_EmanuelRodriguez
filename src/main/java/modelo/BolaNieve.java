@@ -13,6 +13,20 @@ public class BolaNieve extends Hechizo {
         System.out.println("Bola de Nieve: " + objetivo.getNombre() + " ha sido congelado. Vida = 0.");
     }
 
+    @Override
+    public String toString() {
+        return "BolaNieve []";
+    }
+
+    public BolaNieve() {
+    }
+
+    public BolaNieve(String nombre) {
+        super(nombre);
+    }
+
+    
+
 
 
     

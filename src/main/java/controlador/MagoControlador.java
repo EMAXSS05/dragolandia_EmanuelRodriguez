@@ -1,12 +1,13 @@
-package modelo;
+package controlador;
 
 import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import modelo.Mago;
 
 
-public class MagoModel {
+public class MagoControlador {
     
     public void guardarMago(Mago m){
         EntityManager em= util.HibernateUtil.getEntityManager();

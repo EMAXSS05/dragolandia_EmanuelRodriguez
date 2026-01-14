@@ -1,19 +1,16 @@
-package modelo;
+package controlador;
 
 
 import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import modelo.Dragon;
 
 
 
-public class DragonModel {
+public class DragonControlador {
 
-    
-
-
-    
  public void guardarDragon(Dragon dragon) {
         EntityManager em= util.HibernateUtil.getEntityManager();
         EntityTransaction et= em.getTransaction();
