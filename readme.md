@@ -1,7 +1,17 @@
 
-# Análisis de diseño 
-## Diagrama de clases
+# DRAGOLANDIA
 
+# Análisis de diseño 
+
+
+
+
+
+## Introducción
+
+
+
+## Diagrama de Clases
 
 ```mermaid
 classDiagram
@@ -82,3 +92,19 @@ direction TB
 	Hechizo <|-- Drenaje
 
 ```
+
+
+
+## Diagrama entidad relación
+
+## Manual de usuario
+
+Enlace que va al archivo del manual de usuario [Ver aqui](ManualDeUsuario.md)
+
+
+## Tablas creadas en la BD
+
+Enlace que va al archivo pdf [Ver aqui](AD-UD3-AT.06-Dragolandia%20hibernate-EmanuelRodriguez.pdf)
+
+
+## Ampliacion
