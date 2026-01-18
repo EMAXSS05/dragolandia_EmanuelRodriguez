@@ -11,6 +11,7 @@ import jakarta.persistence.Persistence;
 public class HibernateUtil {
 
    private static EntityManagerFactory xestorEntidades= Persistence.createEntityManagerFactory("dragolandiaServizo");
+   
    public static EntityManager getEntityManager(){
     return xestorEntidades.createEntityManager();
    }
