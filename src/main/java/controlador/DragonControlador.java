@@ -32,6 +32,23 @@ public class DragonControlador {
         
     }
 
+
+
+    public void actualizarDragon(Dragon dragon){
+        EntityManager em= util.HibernateUtil.getEntityManager();
+        EntityTransaction et= em.getTransaction();
+
+        try {
+            et.begin();
+            em.merge(dragon);
+            et.commit();
+        } catch (Exception e) {
+            if (et.isActive()) {
+                et.rollback();
+            }
+        }
+    }
+
     /**
      * Método que nos ayuda a consultar info de un Dragon segun su id
      * @param id

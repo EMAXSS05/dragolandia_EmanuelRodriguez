@@ -19,75 +19,44 @@ import modelo.Tipos;
 public final class Principal {
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        JuegoControler juegoControler = null;
+       Scanner sc = new Scanner(System.in);
+        JuegoControler juegoControler = new JuegoControler();
 
         try {
-            Mago ma1;
-            Mago ma2;
-            Mago ma3;
-            Mago ma4;
+            List<Mago> listaMagosPartida = new ArrayList<>();
+            int numMagos = leerEntero(sc, "Seleccione cuántos magos quiere (mínimo 2, máximo 4):");
 
-            int numMagos = leerEntero(sc, "Seleccione cuantos magos quiere en su partida mínimo 2, máximo 4.");
-            if (numMagos == 2) {
-                ma1 = crearMago(sc);
-                ma2 = crearMago(sc);
-                Monstruo monstruoJefe = crearMonstruo(sc);
-                Dragon d1 = crearDragon(sc);
-                Bosque bo = crearBosque(sc, monstruoJefe);
-                d1.setBosque(bo);
-                juegoControler= new JuegoControler();
-                juegoControler.guardarEntidades(monstruoJefe, ma1, ma2, bo, d1); 
-                juegoControler.iniciarBatalla(ma1, ma2, monstruoJefe, bo, d1);
+            if (numMagos >= 2 && numMagos <= 4) {
+    for (int i = 0; i < numMagos; i++) {
+        System.out.println("\nDatos para el Mago " + (i + 1) + ":");
+        listaMagosPartida.add(crearMago(sc));
+    }
 
+    Monstruo monstruoJefe = crearMonstruo(sc);
+    Dragon d1 = crearDragon(sc);
+    Bosque bo = crearBosque(sc, monstruoJefe);
+    d1.setBosque(bo);
 
-            } else if (numMagos == 3) {
-                ma1 = crearMago(sc);
-                ma2 = crearMago(sc);
-                ma3 = crearMago(sc);
-            } else if (numMagos == 4) {
-                ma1 = crearMago(sc);
-                ma2 = crearMago(sc);
-                ma3 = crearMago(sc);
-            } else {
-                System.out.println("Entrada inválida");
-            }
+ 
+    juegoControler.guardarEntidades(listaMagosPartida, monstruoJefe, bo, d1);
 
-           // Monstruo mo1 = crearMonstruo(sc);
-            //Dragon d1 = crearDragon(sc);
-            //Bosque bo = crearBosque(sc, mo1);
+    
+    juegoControler.iniciarBatallaReal(listaMagosPartida, monstruoJefe, bo, d1);
 
-            //d1.setBosque(bo);
+  
+    mostrarResultado(listaMagosPartida, monstruoJefe);
 
-            
-
-            System.out.println("\n--- PRUEBA DE GESTIÓN (CRUD) ---");
-            juegoControler.listarMagos();
-
-            System.out.println("Introduce el ID del mago que quieres buscar:");
-            long idBusqueda = Long.parseLong(sc.nextLine());
-            Mago encontrado = juegoControler.obtenerMago(idBusqueda);
-
-            if (encontrado != null) {
-                System.out.println("Se ha encontrado a: " + encontrado.getNombre());
-            }
-
-            System.out.println("Introduce el id del bosque que quieres borrar: ");
-            long idBosque= Long.parseLong(sc.nextLine());
-            juegoControler.borrarBosque(idBosque);
-            Bosque bosque= juegoControler.obtenerBosque(idBosque);
-            System.out.println("Se ha eliminado el bosque "+bosque.getNombre()+"  con id: "+ idBosque);
+} else {
+    System.out.println("Cantidad de magos no permitida.");
+}
 
         } catch (Exception e) {
-            System.out.println("Error al ejecutar el programa");
+            System.out.println("Error en el programa: " + e.getMessage());
         } finally {
-            if (juegoControler != null) {
-                juegoControler.cerrarRecursos();
-                ;
-            }
+            juegoControler.cerrarRecursos();
             sc.close();
         }
-
+    
     }
 
     static Mago crearMago(Scanner sc) {
@@ -221,28 +190,24 @@ public final class Principal {
      * @param mago
      * @param jefe
      */
-    private static void mostrarResultado(Mago mago1,Mago mago2, Monstruo jefe, Dragon dragon) {
-        System.out.println("\n---RESULTADO FINAL DE LA BATALLA---");
-
-        int vidaMago1 = Math.max(0, mago1.getVida());
-        int vidaMago2= Math.max(0,mago2.getVida());
-        int vidaMonstruo = Math.max(0, jefe.getVida());
-
-        System.out.println("Mago " + mago1.getNombre() + " Vida Final: " + vidaMago1);
-        System.out.println("Monstruo " + jefe.getNombre() + " Vida Final: " + vidaMonstruo);
-
-        System.out.println("----------------------------------------");
-
-        if (vidaMago1 > 0 || vidaMago2 >0) {
-
-            System.out.println("El Mago " + mago1.getNombre() + "ha vencido al Monstruo Jefe");
-        } else if (vidaMonstruo > 0) {
-
-            System.out.println("El Monstruo Jefe " + jefe.getNombre() + " ha defendido el bosque");
-        } else {
-
-            System.out.println("Empate, Ambos combatientes han caído a cero.");
-        }
+    private static void mostrarResultado(List<Mago> magos, Monstruo jefe) {
+    System.out.println("\n--- RESULTADO FINAL ---");
+    
+    boolean algunMagoVivo = false;
+    for (Mago m : magos) {
+        System.out.println("Mago " + m.getNombre() + " - HP Final: " + Math.max(0, m.getVida()));
+        if (m.getVida() > 0) algunMagoVivo = true;
     }
+
+    System.out.println("Jefe " + jefe.getNombre() + " - HP Final: " + Math.max(0, jefe.getVida()));
+
+    if (algunMagoVivo) {
+        System.out.println("¡Los Magos han purificado el bosque!");
+    } else if (jefe.getVida() > 0) {
+        System.out.println("El Monstruo Jefe ha reclamado el bosque.");
+    } else {
+        System.out.println("No hubo supervivientes en la batalla.");
+    }
+}
 
 }

@@ -1,21 +1,8 @@
 package controlador;
 
-
-import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
-
-import com.example.Config;
-
-import modelo.BolaFuego;
-import modelo.BolaNieve;
-import modelo.Bosque;
-import modelo.Dragon;
-import modelo.Drenaje;
-import modelo.Hechizo;
-import modelo.Mago;
-import modelo.Monstruo;
-import modelo.Rayo;
-import modelo.Tipos;
+import modelo.*;
 
 public class JuegoControler {
 
@@ -23,195 +10,153 @@ public class JuegoControler {
     private MonstruoControlador monstruoControlador;
     private BosqueControlador bosqueControlador;
     private DragonControlador dragonControlador;
-    
 
-    public JuegoControler(){
+    public JuegoControler() {
         this.monstruoControlador = new MonstruoControlador();
-        this.magoControlador= new MagoControlador();
-        this.bosqueControlador= new BosqueControlador();
-        this.dragonControlador= new DragonControlador();
+        this.magoControlador = new MagoControlador();
+        this.bosqueControlador = new BosqueControlador();
+        this.dragonControlador = new DragonControlador();
     }
 
     /**
-     * 
-     * @param mo es el monstruo
-     * @param ma es el mago
-     * @param bo es el bosque
-     * @param dragon es el dragon
-     */
-
-    public void guardarEntidades(Monstruo monstruoJefe, Mago ma1,Mago ma2, Bosque bo, Dragon dragon ){
-        try{
-        monstruoControlador.guardarMonstruo(monstruoJefe);
-        magoControlador.guardarMago(ma1);
-        magoControlador.guardarMago(ma2);
-        bosqueControlador.guardarBosque(bo);
-        dragonControlador.guardarDragon(dragon);
-        
-        
-        }
-        catch(Exception e){
-            System.out.println("Error al guardar las entidades" + e.getMessage());
-        }
-
-    }
-
-    /**
-     * Metodo que da inicio al juego en si
-     * @param ma
-     * @param mo
+     * Método que guarda todas las entidades 
+     * @param monstruoJefe
+     * @param ma1
+     * @param ma2
      * @param bo
      * @param dragon
      */
-
-    public void iniciarBatalla(Mago ma1,Mago ma2,  Monstruo monstruoJefe, Bosque bo, Dragon dragon){
-      System.out.println("Comienza la batalla en el bosque "+ bo.getNombre());
-      System.out.println("Mago: "+ ma1.getNombre()+ " vida: "+ma1.getVida()+ "vs Monstruo jefe: "+monstruoJefe.getNombre()+"vida: "+ monstruoJefe.getVida()+" y sus monstritos" );
-      System.out.println("----------------------------------------");
-
-      int turno=1;
-
-         Monstruo mo1 = new Monstruo("Roberto", 200, 30, Tipos.TROL);
-         monstruoControlador.guardarMonstruo(mo1);
-         Monstruo mo2= new Monstruo("Feo", 200,35, Tipos.OGRO );
-         monstruoControlador.guardarMonstruo(mo2);
-         Monstruo mo3= new Monstruo("Venom",200, 40, Tipos.ESPECTRO );
-         monstruoControlador.guardarMonstruo(mo3);
-
-     
-         System.out.println("-----Turno "+turno+"----------");
-         
-         BolaFuego bolaFuego= new BolaFuego("bola de fuego");
-
-         BolaNieve bolaNieve= new BolaNieve("bola de nieve");
-
-         Drenaje drenaje= new Drenaje("drenaje");
-         Rayo rayo= new Rayo("rayo");
-
-
-
-         System.out.println("Mago" + ma1.getNombre()+" lanza "+ bolaFuego.getNombre()+" al monstruo "+mo1.getNombre());
-         ma1.lanzarHechizo(mo1,bolaFuego);
-         
-         System.out.println("Mago "+ma2.getNombre()+ " lanza "+drenaje.getNombre()+" al monstruo "+mo2.getNombre());
-         
-         System.out.println("----Turno del monstuo jefe y sus monstritos ---");
-         System.out.println("Monstruo jefe "+ monstruoJefe.getNombre()+" ataca al mago"+ ma1.getNombre());
-         monstruoJefe.atacar(ma1);
-         System.out.println("Monstrito "+ mo1.getNombre()+" ataca al mago "+ ma2.getNombre());
-         mo1.atacar(ma2);
-         System.out.println("Monstrito "+ mo2.getNombre()+"ataca al mago "+ma1.getNombre());
-         mo2.atacar(ma1);
-         System.out.println("Monstrito "+ mo3.getNombre()+"ataca al mago "+ma2.getNombre());
-         mo3.atacar(ma1);
-
-         System.out.println("-----Turno del dragón ------");
-
-         System.out.println("Dragon ataca al monstruo jefe "+ monstruoJefe.getNombre());
-         dragon.exhalar(monstruoJefe);
-
-         System.out.println("------RESULTADO DE LA RONDA "+turno+"-------");
-         System.out.println("HP del monstruo jefe: "+ monstruoJefe.getVida());
-         System.out.println("HP del monstruo: "+ mo1.getVida());
-         System.out.println("HP del dragón: "+ dragon.getResistencia());
-         System.out.println("HP del mago "+ma1.getVida());
-         System.out.println("HP del mago "+ma2.getVida());
-
-
-
-
-
+public void guardarEntidades(List<Mago> magos, Monstruo monstruoJefe, Bosque bo, Dragon dragon) {
+    try {
+        bosqueControlador.guardarBosque(bo);
+        monstruoControlador.guardarMonstruo(monstruoJefe);
         
-         System.out.println("El mago"+ma1.getNombre()+  " ahora tiene "+ ma1.getVida());
-         turno++;
-
-
-      
-
-      finalizarBatalla(ma1, ma2, monstruoJefe, mo1,mo2,mo3);
-
-    }
-
-
-   /*   public void iniciarBatalla(Mago ma, Monstruo mo, Bosque bo, Dragon dragon){
-      System.out.println("Comienza la batalla en el bosque "+ bo.getNombre());
-      System.out.println("Mago: "+ ma.getNombre()+ "vida: "+ma.getVida()+ "vs Monstruo: "+mo.getNombre()+"vida: "+ mo.getVida());
-      System.out.println("----------------------------------------");
-
-      int turno=1;
-
-      while (ma.getVida() > 0 & mo.getVida() >0) {
-         System.out.println("-----Turno "+turno+"----------");
-         System.out.println("Mago" + ma.getNombre()+" lancha hechizo");
-         ma.lanzarHechizo(mo);
-         System.out.println("El monstruo ahora tiene "+mo.getVida());
-         if (mo.getVida() <=0) {
-            break;
-         }
-         System.out.println("----Turno del monstuo---");
-         System.out.println("Monstruo ataca al mago");
-         mo.atacar(ma);
-         System.out.println("El mago ahora tiene "+ ma.getVida());
-         turno++;
-      }
-
-      finalizarBatalla(ma, mo);
-
-    }*/
-
-
-
-    private void finalizarBatalla(Mago mago1,Mago mago2,Monstruo jefe, Monstruo m1, Monstruo m2, Monstruo m3) {
-        magoControlador.actualizarMago(mago1);
-        magoControlador.actualizarMago(mago2);
-        monstruoControlador.actualizarMonstruo(jefe);
-        monstruoControlador.actualizarMonstruo(m1);
-        monstruoControlador.actualizarMonstruo(m2);
-        monstruoControlador.actualizarMonstruo(m3);
+       
+        for (Mago m : magos) {
+            magoControlador.guardarMago(m);
+        }
         
+        dragonControlador.guardarDragon(dragon);
+    } catch (Exception e) {
+        System.out.println("Error al guardar las entidades: " + e.getMessage());
     }
+}
 
-     private void finalizarBatalla(Mago mago, Monstruo jefe) {
-        magoControlador.actualizarMago(mago);
-        monstruoControlador.actualizarMonstruo(jefe);
-        
-    }
+    /**
+     * Metodo que inicia la batalla
+     * @param magos
+     * @param jefe
+     * @param bo
+     * @param dragon
+     */
+    public void iniciarBatallaReal(List<Mago> magos, Monstruo jefe, Bosque bo, Dragon dragon) {
+        List<Monstruo> monstruosVivos = new ArrayList<>();
+        monstruosVivos.add(jefe);
 
-
-
+        Monstruo m2 = new Monstruo("Orco Gruñón", 40, 10, Tipos.OGRO);
+        Monstruo m3 = new Monstruo("Espectro Errante", 30, 15, Tipos.ESPECTRO);
+        monstruoControlador.guardarMonstruo(m2);
+        monstruoControlador.guardarMonstruo(m3);
+        monstruosVivos.add(m2);
+        monstruosVivos.add(m3);
 
     
+        List<Hechizo> conjurosDelMundo = List.of(new BolaFuego("Bola de Fuego"), new Rayo("Rayo"), new Drenaje("Drenaje"));
+
+        int ronda = 1;
+      
+        while (!magos.isEmpty() && !monstruosVivos.isEmpty()) {
+            System.out.println("\n--- RONDA " + ronda + " ---");
+
+            
+            for (Mago mago : new ArrayList<>(magos)) {
+                for (Hechizo hGlobal : conjurosDelMundo) {
+                    if (mago.getConjuros().contains(hGlobal)) { 
+                        for (Monstruo mon : monstruosVivos) {
+                            hGlobal.aplicarEfecto(mago, mon);
+                        }
+                    } else {
+                        
+                        mago.setVida(mago.getVida() - 1);
+                    }
+                }
+            }
+
+            for (Monstruo mon : monstruosVivos) {
+                if (!magos.isEmpty()) {
+                    Mago objetivo = magos.get(0);
+                    mon.atacar(objetivo);
+                }
+            }
+
+           
+            if (bo.getMonstruoJefe() != null) {
+                dragon.exhalar(bo.getMonstruoJefe());
+            }
+
+            
+            actualizarEstadoPostTurno(magos, monstruosVivos, bo);
+
+            sincronizarBD(magos, monstruosVivos, bo, dragon);
+            
+            ronda++;
+        }
+        System.out.println("\n--- BATALLA FINALIZADA ---");
+    }
+
+   /**
+    * método que actualiza el estado de las entidades dependiendo de du vida, y asigna un nuevo monstruo jefe al bosque.
+    * @param magos
+    * @param monstruos
+    * @param bo
+    */
+    private void actualizarEstadoPostTurno(List<Mago> magos, List<Monstruo> monstruos, Bosque bo) {
+        magos.removeIf(m -> m.getVida() <= 0);
+
+        Monstruo jefeActual = bo.getMonstruoJefe();
+        if (jefeActual != null && jefeActual.getVida() <= 0) {
+            System.out.println("¡EL JEFE " + jefeActual.getNombre() + " HA CAÍDO!");
+            monstruos.remove(jefeActual);
+            if (!monstruos.isEmpty()) {
+                bo.setMonstruoJefe(monstruos.get(0));
+                System.out.println("Nuevo jefe asignado: " + bo.getMonstruoJefe().getNombre());
+            } else {
+                bo.setMonstruoJefe(null);
+            }
+        }
+        monstruos.removeIf(m -> m.getVida() <= 0);
+    }
+ 
+    /**
+     * Método que actualiza las entidades desde la base de datos.
+     * @param magos
+     * @param monstruos
+     * @param bo
+     * @param dragon
+     */
+    private void sincronizarBD(List<Mago> magos, List<Monstruo> monstruos, Bosque bo, Dragon dragon) {
+        for (Mago m : magos) magoControlador.actualizarMago(m);
+        for (Monstruo mon : monstruos) monstruoControlador.actualizarMonstruo(mon);
+        bosqueControlador.actualizarBosque(bo);
+        dragonControlador.actualizarDragon(dragon);
+    }
+
+    /**
+     * Método que libera los recursos de la base de datos
+     */
     public void cerrarRecursos() {
         util.HibernateUtil.close();
     }
 
-    public void listarMagos(){
+    public void listarMagos() {
         List<Mago> magos = magoControlador.obtenerTodos();
-        if (magos.isEmpty()) {
-            System.out.println("No hay magos registrados");
-        } else{
-            for (Mago mago : magos) {
-                System.out.println("Mago con id: "+ mago.getId()+ "Nombre: "+mago.getNombre()+" HP: "+mago.getVida());
-            }
-        }
+        for (Mago m : magos) System.out.println("Mago: " + m.getNombre() + " HP: " + m.getVida());
     }
 
-    public Mago obtenerMago(Long id){
-       return magoControlador.leerPorId(id);
-    }
+    public Mago obtenerMago(Long id) { return magoControlador.leerPorId(id); }
+    
+    public void borrarBosque(Long id) { bosqueControlador.eliminar(id); }
 
-    public void borrarMago(Long id){
-        magoControlador.borrarMago(id);
-        System.out.println("Mago con id: "+id +" ha sido eliminado");
-    }
+    public Bosque obtenerBosque(Long id) { return bosqueControlador.obtenerBosque(id); }
 
-    public void borrarBosque(Long id){
-        bosqueControlador.eliminar(id);
-        System.out.println("El bosque con id: "+ id+" ha sido eliminado");
-    }
-
-    public Bosque obtenerBosque(Long id){
-        return bosqueControlador.obtenerBosque(id);
-    }
-
-}
+} 
